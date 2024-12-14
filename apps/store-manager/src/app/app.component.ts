@@ -8,10 +8,10 @@ import { TreeViewComponent } from './tree-view.component';
   template: `
     <div class="p-4 font-inter space-y-4">
       <div class="flex items-center justify-center">
-        <h1 class="font-semibold text-4xl">TreeView: Category Manager</h1>
+        <h1 class="font-semibold text-4xl">🌳View: Category Manager</h1>
       </div>
       <div
-        class="border shadow-md rounded-lg p-4 bg-white space-y-2 cursor-help"
+        class="border shadow-md rounded-lg p-4 bg-gray-100 space-y-2 cursor-help"
       >
         <h3 class="text-2xl font-bold">How does it work?</h3>
         <p class="text-lg">
@@ -19,19 +19,25 @@ import { TreeViewComponent } from './tree-view.component';
           categories. You can add, edit, and delete categories.
         </p>
         <div class="flex flex-wrap gap-2 items-center">
-          <div class="btn text-sm p-1 border border-gray-400 rounded-lg">
+          <div
+            class="btn text-sm p-1 border border-gray-400 rounded-lg bg-white"
+          >
             🆕 Add
           </div>
           <p>Adds a new child category and names it "New" by default.</p>
         </div>
         <div class="flex gap-2 items-center">
-          <div class="btn text-sm p-1 border border-gray-400 rounded-lg">
+          <div
+            class="btn text-sm p-1 border border-gray-400 rounded-lg bg-white"
+          >
             ✏️ Edit
           </div>
           <p>Edits the name of the category.</p>
         </div>
         <div class="flex gap-2 items-center">
-          <div class="btn text-sm p-1 border border-gray-400 rounded-lg">
+          <div
+            class="btn text-sm p-1 border border-gray-400 rounded-lg bg-white"
+          >
             🗑️ Delete
           </div>
           <p>Deletes the category.</p>
