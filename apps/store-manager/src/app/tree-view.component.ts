@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
   template: `
     <ng-template let-category let-parent="parent" #categoryNode>
       @let state = categoryNode.elementRef.nativeElement.state;
-      <div class="font-inter p-2">
+      <div class="font-inter p-2 node">
         <div class="cursor-pointer flex gap-4 items-center">
           <div
             class="select-none"

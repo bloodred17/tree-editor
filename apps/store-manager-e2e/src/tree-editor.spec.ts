@@ -16,7 +16,7 @@ test.describe.serial('Tree editor', () => {
 
     const newNode = page.locator('text=New');
     await expect(newNode).toBeVisible();
-
+    await page.waitForTimeout(2000);
     const nodeCount = await page.locator('.node').count();
     expect(nodeCount).toBeGreaterThan(oldNodeCount);
   });
@@ -32,10 +32,10 @@ test.describe.serial('Tree editor', () => {
     await addButton.click();
     await page.waitForTimeout(1000);
 
-    await page.locator('input').fill('Node');
+    await page.locator('input').fill('abc');
     await page.locator('text=Save').first().click();
 
-    const newNode = page.locator('text=Node');
+    const newNode = page.locator('text=Abc');
     await expect(newNode).toBeVisible();
   });
 
@@ -46,7 +46,7 @@ test.describe.serial('Tree editor', () => {
     const oldNodeCount = await page.locator('.node').count();
 
     const addButton = page
-      .locator(`//div[contains(@class, "node")][contains(., "Delete")]`)
+      .locator(`//div[contains(@class, "abc")][contains(., "Delete")]`)
       .last();
     await addButton.click({ force: true });
     await page.waitForTimeout(2000);
