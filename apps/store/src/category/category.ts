@@ -3,6 +3,7 @@ import {
   index,
   modelOptions,
   prop,
+  Ref,
 } from '@typegoose/typegoose';
 
 export class CategoryTreeNode {
@@ -19,8 +20,8 @@ export class Category {
   @prop()
   name: string;
 
-  @prop()
-  parent: string;
+  @prop({ ref: () => Category })
+  parent?: Ref<Category>;
 
   static get model() {
     return getModelForClass(Category);
@@ -35,30 +36,37 @@ export class Category {
 
 type State = {
   categoryMap: Record<string, Category[]>;
-  ids: Record<string, string>;
+  idNameMap: Record<string, string>;
 };
 
-function createTreeNode({ categoryMap, ids }: State, currentNode: string) {
+function createTreeNode(
+  { categoryMap, idNameMap }: State,
+  currentNode: string
+) {
   const node = new CategoryTreeNode();
-  node.name = currentNode;
-  node.id = ids[currentNode];
+  node.id = currentNode;
+  node.name = idNameMap[currentNode] || 'root';
   for (const category of categoryMap[currentNode] || []) {
-    node.children.push(createTreeNode({ categoryMap, ids }, category.name));
+    node.children.push(
+      createTreeNode({ categoryMap, idNameMap }, category._id)
+    );
   }
   return node;
 }
 
 export function flatToTree(data: Category[]) {
   const categoryMap: Record<string, Category[]> = {};
-  const ids: Record<string, string> = {};
+  const idNameMap: Record<string, string> = {};
   for (const category of data) {
-    if (!categoryMap[category.parent]) {
-      categoryMap[category.parent] = [];
+    const parent = (category.parent as string) || 'root';
+    if (!categoryMap[category.parent as string]) {
+      categoryMap[parent] = [];
     }
-    categoryMap[category.parent].push(category);
-    if (!ids[category.name]) {
-      ids[category.name] = category._id;
+    categoryMap[parent].push(category);
+    if (!idNameMap[category._id]) {
+      idNameMap[category._id] = category.name;
     }
   }
-  return createTreeNode({ categoryMap, ids }, 'root');
+  idNameMap['root'] = null;
+  return createTreeNode({ categoryMap, idNameMap }, 'root');
 }

@@ -87,11 +87,13 @@ export class TreeViewComponent implements OnInit {
   categoryTree = signal<any>(undefined);
   defaultState = signal<'open' | 'close'>('open');
 
+  setCategoryTree = () => (categories: any) => {
+    console.log(categories);
+    this.categoryTree.set(categories);
+  };
+
   ngOnInit() {
-    this.categoryService.fetchCategories().subscribe((categories) => {
-      console.log(categories);
-      this.categoryTree.set(categories);
-    });
+    this.categoryService.fetchCategories().subscribe(this.setCategoryTree());
   }
 
   initCategoryState(category: any, element: any) {
@@ -128,8 +130,8 @@ export class TreeViewComponent implements OnInit {
   saveEdit(category: any, element: any) {
     this.initCategoryState(category, element);
     element.state[category.id].edit = false;
-    // this.categoryService.saveCategory(category).subscribe((res) => {
-    //   console.log(res);
-    // });
+    this.categoryService
+      .updateCategory(category.id, category.name)
+      .subscribe(this.setCategoryTree());
   }
 }
