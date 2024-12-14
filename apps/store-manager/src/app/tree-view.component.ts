@@ -50,7 +50,9 @@ import { FormsModule } from '@angular/forms';
           </div>
           } @else {
           <div
-            class="btn text-sm p-1 border border-gray-400 rounded-lg"
+            class="btn text-sm p-1 border border-gray-400 rounded-lg {{
+              category.name
+            }} add"
             (click)="
               addNewCategory(category, categoryNode.elementRef.nativeElement)
             "
@@ -58,7 +60,9 @@ import { FormsModule } from '@angular/forms';
             🆕 Add
           </div>
           <div
-            class="btn text-sm p-1 border border-gray-400 rounded-lg"
+            class="btn text-sm p-1 border border-gray-400 rounded-lg {{
+              category.name
+            }} edit"
             (click)="
               editCategory(category, categoryNode.elementRef.nativeElement)
             "
@@ -67,7 +71,9 @@ import { FormsModule } from '@angular/forms';
           </div>
           }
           <div
-            class="btn text-sm p-1 border border-gray-400 rounded-lg"
+            class="btn text-sm p-1 border border-gray-400 rounded-lg {{
+              category.name
+            }} add"
             (click)="
               deleteCategory(category, categoryNode.elementRef.nativeElement)
             "
