@@ -4,7 +4,9 @@
   "license": "MIT",
   "scripts": {
     "serve:store": "nx serve store",
-    "serve:manager": "nx serve store-manager"
+    "serve:manager": "nx serve store-manager",
+    "test:store": "nx e2e store-e2e",
+    "test:manager": "nx e2e store-manager-e2e"
   },
   "private": true,
   "dependencies": {
@@ -58,6 +60,7 @@
     "@types/express": "4.17.14",
     "@types/jest": "^29.5.12",
     "@types/node": "18.16.9",
+    "@types/supertest": "^6.0.2",
     "@typescript-eslint/utils": "^8.13.0",
     "angular-eslint": "^19.0.2",
     "autoprefixer": "^10.4.0",
@@ -72,6 +75,7 @@
     "postcss": "^8.4.5",
     "prettier": "^2.6.2",
     "react-refresh": "^0.10.0",
+    "supertest": "^7.0.0",
     "tailwindcss": "^3.0.2",
     "ts-jest": "^29.1.0",
     "ts-node": "10.9.1",
