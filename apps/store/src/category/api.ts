@@ -13,7 +13,7 @@ categoryApi.get('/', async (req, res) => {
       message: 'Categories fetched!',
     });
   } catch (e) {
-    res.status(500).send({ message: e.message });
+    res.status(500).send({ success: false, message: e.message });
   }
 });
 

@@ -4,11 +4,11 @@
  */
 
 import express from 'express';
-import * as path from 'path';
-import * as mongoose from 'mongoose';
-import * as process from 'node:process';
+import path from 'path';
+import mongoose from 'mongoose';
 import 'dotenv/config';
 import { categoryApi } from './category/api';
+import cors from 'cors';
 
 mongoose
   .connect(process.env.MONGODB_ENDPOINT + 'store')
@@ -20,6 +20,7 @@ mongoose
     const app = express();
 
     app.use('/assets', express.static(path.join(__dirname, 'assets')));
+    app.use(cors());
     app.use(express.json());
 
     app.get('/api', (req, res) => {
@@ -34,9 +35,7 @@ mongoose
     app.use('/api/category', categoryApi);
 
     const port = process.env.PORT || 3333;
-    let server;
-
-    server = app.listen(port, () => {
+    let server = app.listen(port, () => {
       console.log(`Listening at http://localhost:${port}/api`);
     });
     server.on('error', console.error);
