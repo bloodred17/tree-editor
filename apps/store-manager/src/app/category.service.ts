@@ -26,7 +26,11 @@ export class CategoryService {
         name,
         parent: parent === 'root' ? null : parent,
       })
-      .pipe(switchMap(() => this.fetchCategories()));
+      .pipe(
+        // switchMap(() => this.fetchCategories())
+        map((response) => response.data),
+        catchError(() => this.fetchCategories())
+      );
   }
 
   updateCategory(id: string, name: string) {
@@ -36,7 +40,8 @@ export class CategoryService {
         name,
       })
       .pipe(
-        switchMap(() => this.fetchCategories()),
+        // switchMap(() => this.fetchCategories()),
+        map((response) => response.data),
         catchError(() => this.fetchCategories())
       );
   }
@@ -44,6 +49,10 @@ export class CategoryService {
   deleteCategory(id: string) {
     return this.http
       .delete<ShopResponse<any>>(`http://localhost:3333/api/category/${id}`)
-      .pipe(switchMap(() => this.fetchCategories()));
+      .pipe(
+        // switchMap(() => this.fetchCategories())
+        map((response) => response.data),
+        catchError(() => this.fetchCategories())
+      );
   }
 }

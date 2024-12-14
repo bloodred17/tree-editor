@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "serve:store": "nx serve store"
+    "serve:store": "nx serve store",
+    "serve:manager": "nx serve store-manager"
   },
   "private": true,
   "dependencies": {

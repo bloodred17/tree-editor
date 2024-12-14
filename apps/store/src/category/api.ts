@@ -20,16 +20,17 @@ categoryApi.get('/', async (req, res) => {
 categoryApi.post('/', async (req, res) => {
   try {
     const parent = await Category.model.findOne({ _id: req.body.parent });
-    console.log(parent);
     const category = await Category.model.create(
       new Category({
         name: req.body.name?.toLowerCase(),
         parent: parent,
       })
     );
+    const entries = await Category.model.find({});
     res.send({
       success: true,
-      data: category,
+      // data: category,
+      data: flatToTree(entries),
       message: 'Category created!',
     });
   } catch (e) {
@@ -50,9 +51,11 @@ categoryApi.put('/', async (req, res) => {
         name: req.body.name?.toLowerCase(),
       }
     );
+    const entries = await Category.model.find({});
     res.send({
       success: true,
-      data: updated,
+      // data: updated,
+      data: flatToTree(entries),
       message: 'Category updated!',
     });
   } catch (e) {
@@ -68,9 +71,11 @@ categoryApi.delete('/:id', async (req, res) => {
     const deleted = await Category.model.findOneAndDelete({
       $or: [{ _id: req.params.id }, { parent: req.params.id }],
     });
+    const entries = await Category.model.find({});
     res.send({
       success: true,
-      data: deleted,
+      // data: deleted,
+      data: flatToTree(entries),
       message: 'Category deleted!',
     });
   } catch (e) {
