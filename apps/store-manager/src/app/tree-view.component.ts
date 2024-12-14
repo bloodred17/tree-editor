@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CategoryService } from './category.service';
 import { NgClass, NgTemplateOutlet, TitleCasePipe } from '@angular/common';
 
@@ -76,8 +76,8 @@ export class TreeViewComponent implements OnInit {
         element.state[category.id] = true;
       }
     }
-    console.log(category.name, category.id);
-    console.log(element.state);
     element.state[category.id] = !element.state[category.id];
   }
+
+  editCategory(category) {}
 }
