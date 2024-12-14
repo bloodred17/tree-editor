@@ -20,6 +20,7 @@ categoryApi.get('/', async (req, res) => {
 categoryApi.post('/', async (req, res) => {
   try {
     const parent = await Category.model.findOne({ _id: req.body.parent });
+    console.log(parent);
     const category = await Category.model.create(
       new Category({
         name: req.body.name?.toLowerCase(),

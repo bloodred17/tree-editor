@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError, map, switchMap } from 'rxjs';
+import { catchError, map, of, switchMap } from 'rxjs';
 
 export interface ShopResponse<T> {
   success: boolean;
@@ -21,10 +21,11 @@ export class CategoryService {
   }
 
   createCategory(name: string, parent: string) {
+    console.log(name, parent);
     return this.http
       .post<ShopResponse<any>>('http://localhost:3333/api/category', {
         name,
-        parent,
+        parent: parent === 'root' ? null : parent,
       })
       .pipe(switchMap(() => this.fetchCategories()));
   }

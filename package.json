@@ -2,7 +2,9 @@
   "name": "@stylo/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "serve:store": "nx serve store"
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "~19.0.0",

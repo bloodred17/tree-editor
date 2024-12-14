@@ -59,7 +59,7 @@ export function flatToTree(data: Category[]) {
   const idNameMap: Record<string, string> = {};
   for (const category of data) {
     const parent = (category.parent as string) || 'root';
-    if (!categoryMap[category.parent as string]) {
+    if (!categoryMap[parent]) {
       categoryMap[parent] = [];
     }
     categoryMap[parent].push(category);
