@@ -17,22 +17,23 @@ import { FormsModule } from '@angular/forms';
               $event.stopPropagation()
             "
           >
-            @if (category.children.length == 0) { 📦 } @else if
-            (state?.[category.id] && state?.[category.id]?.display == false) {
-            ➕ } @else { ➖ }
+            @if (category?.children && category?.children.length == 0) { 📦 }
+            @else if (state?.[category.id] && state?.[category.id]?.display ==
+            false) { ➕ } @else { ➖ }
           </div>
           <div class="font-semibold">
-            @if (state?.[category.id] && state?.[category.id].edit == true) {
+            @if (state?.[category?.id] && state?.[category?.id].edit == true) {
             <input
               class="border border-gray-400 rounded-lg p-1"
               type="text"
               [(ngModel)]="category.name"
             />
             } @else {
-            {{ category.name | titlecase }}
+            {{ category?.name | titlecase }}
             }
           </div>
-          @if (state?.[category.id] && state?.[category.id].edit == true) {
+          @if (category?.id != 'root') { @if (state?.[category?.id] &&
+          state?.[category?.id].edit == true) {
           <div
             class="btn text-sm p-1 border border-gray-400 rounded-lg"
             (click)="saveEdit(category, categoryNode.elementRef.nativeElement)"
@@ -51,7 +52,7 @@ import { FormsModule } from '@angular/forms';
           <div
             class="btn text-sm p-1 border border-gray-400 rounded-lg"
             (click)="
-              addCategory(category, categoryNode.elementRef.nativeElement)
+              addNewCategory(category, categoryNode.elementRef.nativeElement)
             "
           >
             🆕 Add
@@ -73,12 +74,22 @@ import { FormsModule } from '@angular/forms';
           >
             🗑️ Delete
           </div>
+          } @else {
+          <div
+            class="btn text-sm p-1 border border-gray-400 rounded-lg"
+            (click)="
+              addNewCategory(category, categoryNode.elementRef.nativeElement)
+            "
+          >
+            🆕 Add
+          </div>
+          }
         </div>
         <ul
           class="list-none ml-4 border-l border-gray-300 pl-4 space-y-2"
-          [ngClass]="{ hidden: state?.[category.id] && state?.[category.id].display == false }"
+          [ngClass]="{ 'hidden': state?.[category.id] && state?.[category.id].display == false }"
         >
-          @for (categoryItem of category.children; track categoryItem.id) {
+          @for (categoryItem of category?.children; track categoryItem.id) {
           <li class="">
             <ng-container
               *ngTemplateOutlet="
@@ -90,61 +101,6 @@ import { FormsModule } from '@angular/forms';
           }
         </ul>
       </div>
-      @if (state?.[category.id] && state?.[category.id].add == true) {
-      <div class="font-inter p-2">
-        @let _category = { name: 'new', parent: parent, children: [], id: 'new'
-        };
-        <div class="cursor-pointer flex gap-4 items-center">
-          <div
-            class="select-none"
-            (click)="
-              toggleCategory(_category, categoryNode.elementRef.nativeElement);
-              $event.stopPropagation()
-            "
-          >
-            @if (_category.children.length == 0) { 📦 } @else if
-            (state?.[_category.id] && state?.[_category.id]?.display == false) {
-            ➕ } @else { ➖ }
-          </div>
-          <div class="font-semibold">
-            @if (state?.[_category.id] && state?.[_category.id].edit == true) {
-            <input
-              class="border border-gray-400 rounded-lg p-1"
-              type="text"
-              [(ngModel)]="_category.name"
-            />
-            } @else {
-            {{ _category.name | titlecase }}
-            }
-          </div>
-          @if (state?.[_category.id] && state?.[_category.id].edit == true) {
-          <div
-            class="btn text-sm p-1 border border-gray-400 rounded-lg"
-            (click)="saveEdit(_category, categoryNode.elementRef.nativeElement)"
-          >
-            📩 Save
-          </div>
-          <div
-            class="btn text-sm p-1 border border-gray-400 rounded-lg"
-            (click)="
-              cancelEdit(_category, categoryNode.elementRef.nativeElement)
-            "
-          >
-            ✖️ Cancel
-          </div>
-          } @else {
-          <div
-            class="btn text-sm p-1 border border-gray-400 rounded-lg"
-            (click)="
-              editCategory(_category, categoryNode.elementRef.nativeElement)
-            "
-          >
-            ✏️ Edit
-          </div>
-          }
-        </div>
-      </div>
-      }
     </ng-template>
 
     <ng-container
@@ -160,10 +116,8 @@ export class TreeViewComponent implements OnInit {
   private readonly categoryService = inject(CategoryService);
   categoryTree = signal<any>(undefined);
   defaultState = signal<'open' | 'close'>('open');
-  creationMode = signal<'add' | 'edit'>('edit');
 
   setCategoryTree = () => (categories: any) => {
-    console.log(categories);
     this.categoryTree.set(categories);
   };
 
@@ -185,7 +139,6 @@ export class TreeViewComponent implements OnInit {
         add: false,
       };
     }
-    // console.log(category.id, element.state[category.id]);
   }
 
   toggleCategory(category: any, element: any) {
@@ -194,10 +147,8 @@ export class TreeViewComponent implements OnInit {
   }
 
   editCategory(category: any, element: any) {
-    this.creationMode.set('edit');
     this.initCategoryState(category, element);
     element.state[category.id].edit = true;
-    console.log(category.id);
   }
 
   cancelEdit(category: any, element: any) {
@@ -206,18 +157,11 @@ export class TreeViewComponent implements OnInit {
   }
 
   saveEdit(category: any, element: any) {
-    console.log(category);
     this.initCategoryState(category, element);
     element.state[category.id].edit = false;
-    if (this.creationMode() == 'add') {
-      this.categoryService
-        .createCategory(category.name, category.parent)
-        .subscribe(this.setCategoryTree());
-    } else {
-      this.categoryService
-        .updateCategory(category.id, category.name)
-        .subscribe(this.setCategoryTree());
-    }
+    this.categoryService
+      .updateCategory(category.id, category?.name)
+      .subscribe(this.setCategoryTree());
   }
 
   deleteCategory(category: any, element: any) {
@@ -227,11 +171,9 @@ export class TreeViewComponent implements OnInit {
       .subscribe(this.setCategoryTree());
   }
 
-  addCategory(category: any, element: any) {
-    this.creationMode.set('add');
-    this.initCategoryState(category, element);
-    element.state[category.id].add = true;
-    element.state['new'] = { edit: true, display: true };
-    console.log(this.creationMode());
+  addNewCategory(category: any, element: any) {
+    this.categoryService
+      .createCategory('new', category.id)
+      .subscribe(this.setCategoryTree());
   }
 }

@@ -21,7 +21,6 @@ export class CategoryService {
   }
 
   createCategory(name: string, parent: string) {
-    console.log(name, parent);
     return this.http
       .post<ShopResponse<any>>('http://localhost:3333/api/category', {
         name,
