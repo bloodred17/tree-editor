@@ -6,7 +6,11 @@
     "serve:store": "nx serve store",
     "serve:manager": "nx serve store-manager",
     "test:store": "nx e2e store-e2e",
-    "test:manager": "nx e2e store-manager-e2e"
+    "test:manager": "nx e2e store-manager-e2e",
+    "build:store": "nx build store",
+    "build:manager": "nx build store-manager",
+    "start:build": "npm run build:store && npm run build:manager",
+    "start:store": "node dist/apps/store/main.js"
   },
   "private": true,
   "dependencies": {
